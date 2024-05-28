@@ -36,3 +36,4 @@ terraform.rc
 
 #txt files
 *.txt
+*.ps1
