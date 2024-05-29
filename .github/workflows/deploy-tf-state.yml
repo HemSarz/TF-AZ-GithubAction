@@ -1,21 +1,16 @@
-name : Deploy Terraform state to backend
-
-on:
-  workflow_dispatch:
-
+name: Deploy Terraform state to backend
+'on':
+  workflow_dispatch: null
 jobs:
   Deploy:
-    name: 'Deploy TF State to backend'
+    name: Deploy TF State to backend
     runs-on: ubuntu-latest
-
     defaults:
       run:
         shell: bash
-    
     steps:
       - name: checkout
         uses: actions/checkout@v2.3.4
-
       - name: Deploy TF State
         run: |
           set -a
@@ -24,7 +19,7 @@ jobs:
             -u ${{ secrets.AZURE_CLIENT_ID }} \
             -p ${{ secrets.AZURE_CLIENT_SECRET }} \
             --tenant ${{ secrets.AZURE_TENANT_ID }}
-          
+
           az group create \
             -l $TF_VAR_location
             -n $TF_VAR_resource_group_name
