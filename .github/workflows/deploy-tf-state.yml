@@ -60,11 +60,11 @@ jobs:
             -l $TF_VAR_location \
             -g $TF_VAR_state_resource_group_name
 
-      - name: Fetch SPN ObjectID and Grant SPN Access to KV
+      - name: Retrieve SPN ObjectID and Grant SPN Access to KV
         run: |
           set -a
           source .env.backend
-          SPN_OBJECT_ID=$(az ad sp show --id "$SPN_NAME" --query objectId -o tsv)
+          SPN_OBJECT_ID=$(az ad sp show --id ${{ secrets.CLIENT_ID }} --query objectId -o tsv)
           echo "::set-output name=spn_object_id::$SPN_OBJECT_ID"
 
           az keyvault set-policy \
