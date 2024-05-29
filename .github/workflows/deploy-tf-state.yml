@@ -64,14 +64,14 @@ jobs:
         run: |
           set -a
           source .env.backend
-          SPN_OBJECT_ID=$(az ad sp show --id "$SPN_NAME" --query objectId -o tsv)
-          echo "::set-output name=spn_object_id::$SPN_OBJECT_ID"
+          backend_SPNid=$(az ad sp show --id ${{ secrets.CLIENT_ID }} --query id -o tsv)
+
+          echo "backend_SPNid:$SPNObjectId"
 
           az keyvault set-policy \
             -n $TF_VAR_state_key_vault_name \
-            --object-id $SPN_OBJECT_ID \
+            --object-id $SPNObjectId \
             --secret-permissions get list set
-
 
       - name: Create SSHKey
         run: |
