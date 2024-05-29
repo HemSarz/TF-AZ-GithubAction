@@ -1,4 +1,4 @@
-name : Deploy Terraform state to backend
+name: Deploy Terraform state to backend
 
 on:
   workflow_dispatch:
@@ -13,25 +13,28 @@ jobs:
         shell: bash
     
     steps:
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.ARM_CLIENT_ID }}
+          client-secret: ${{ secrets.ARM_CLIENT_SECRET }}
+          tenant-id: ${{ secrets.ARM_TENANT_ID }}
 
       - name: Deploy TF State
         run: |
           set -a
           source .env.backend
-          az login --service-principal \
-            -u ${{ secrets.ARM_CLIENT_ID }} \
-            -p ${{ secrets.ARM_CLIENT_SECRET }} \
-            --tenant ${{ secrets.ARM_TENANT_ID }}
-          
+
           az group create \
-            -l $TF_VAR_location
+            -l $TF_VAR_location \
             -n $TF_VAR_resource_group_name
 
           az storage account create \
             -n $TF_VAR_state_storage_account_name \
-            -g $TF_VAR_state_resource_group_name \
+            -g $TF_VAR_resource_group_name \
             -l $TF_VAR_location \
             --sku Standard_LRS \
             --allow-blob-public-access false
