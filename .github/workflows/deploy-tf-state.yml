@@ -23,4 +23,4 @@ jobs:
           az keyvault create \
             -n $TF_VAR_state_key_vault_name \
             -l $TF_VAR_location \
-            -rg $TF_VAR_state_resource_group_name
+            -g $TF_VAR_state_resource_group_name
