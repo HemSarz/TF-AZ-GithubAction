@@ -22,15 +22,15 @@ jobs:
 
           az group create \
             -l $TF_VAR_location \
-            -n $TF_VAR_resource_group_name
+            -n $TF_VAR_state_resource_group_name
 
           az storage account create \
             -n $TF_VAR_state_storage_account_name \
             -g $TF_VAR_state_resource_group_name \
             -l $TF_VAR_location \
-            --sku Standard_LRS \
+            --sku $TF_VAR_stg_sku_name \
             --allow-blob-public-access false
 
           az storage container create \
-            --name tfstate \
+            --name $TF_VAR_state_storage_account_container_name \
             --account-name $TF_VAR_state_storage_account_name
