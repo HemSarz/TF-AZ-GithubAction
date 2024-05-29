@@ -26,12 +26,16 @@ jobs:
 
       - name: Create Resource Group
         run: |
+          set -a
+          source .env.backend
           az group create \
             -l $TF_VAR_location \
             -n $TF_VAR_state_resource_group_name
 
       - name: Create Storage Account
         run: |
+          set -a
+          source .env.backend
           az storage account create \
             -n $TF_VAR_state_storage_account_name \
             -g $TF_VAR_state_resource_group_name \
@@ -41,12 +45,16 @@ jobs:
 
       - name: Create STG Container
         run: |
+          set -a
+          source .env.backend
           az storage container create \
             --name $TF_VAR_state_storage_account_container_name \
             --account-name $TF_VAR_state_storage_account_name
 
       - name: Create Key Vault
         run: |
+          set -a
+          source .env.backend
           az keyvault create \
             -n $TF_VAR_state_key_vault_name \
             -l $TF_VAR_location \
@@ -57,11 +65,13 @@ jobs:
               spn_object_id=$(az ad sp show \
               --id ${{ secrets.CLIENT_ID }} \
               --query objectId -o tsv)
-              
+
               echo "SPN_OBJECT_ID=$spn_object_id" >> $GITHUB_ENV
 
       - name: Grant SPN Access to KV
         run: |
+          set -a
+          source .env.backend
             az keyvault set-policy \
             -n $TF_VAR_state_key_vault_name \
             --object-id ${{ env.SPN_OBJECT_ID }} \
@@ -73,6 +83,8 @@ jobs:
 
       - name: Upload SSH public key to Key Vault
         run: |
+          set -a
+          source .env.backend
           az keyvault secret set \
             --vault-name $TF_VAR_state_key_vault_name \
             --name tfazlnxkeypub \
@@ -80,6 +92,8 @@ jobs:
 
       - name: Upload SSH private key to Key Vault
         run: |
+          set -a
+          source .env.backend
           az keyvault secret set \
             --vault-name $TF_VAR_state_key_vault_name \
             --name tfazlnxkeypriv \
