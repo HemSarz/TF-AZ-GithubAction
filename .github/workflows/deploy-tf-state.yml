@@ -66,11 +66,11 @@ jobs:
           source .env.backend
             backend_SPNid=$(az ad sp show --id ${{ secrets.CLIENT_ID }} --query id -o tsv)
   
-            echo "backend_SPNid:$SPNObjectId"
+            echo "backend_SPNid: backend_SPNid"
   
             az keyvault set-policy \
               -n $TF_VAR_state_key_vault_name \
-              --object-id $SPNObjectId \
+              --object-id $backend_SPNid \
               --secret-permissions get list set
 
       - name: Create SSHKey
