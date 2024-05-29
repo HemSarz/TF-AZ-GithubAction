@@ -49,13 +49,13 @@ jobs:
       - name: Upload SSH public key to Key Vault
         run: |
           az keyvault secret set \
-            --vault-name ${{ env.TF_VAR_state_key_vault_name }} \
+            --vault-name $TF_VAR_state_key_vault_name \
             --name tfazlnxkeypub \
             --file tfazlnxkey.pub
 
       - name: Upload SSH private key to Key Vault
         run: |
           az keyvault secret set \
-            --vault-name ${{ env.TF_VAR_state_key_vault_name }} \
+            --vault-name $TF_VAR_state_key_vault_name \
             --name tfazlnxkeypriv \
             --file tfazlnxkey
