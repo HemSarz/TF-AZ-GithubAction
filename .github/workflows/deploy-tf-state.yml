@@ -64,7 +64,6 @@ jobs:
         run: |
           set -a
           source .env.backend
-          - name: Fetch SPN ObjectID & Grant SPN Access to KV
           backend_SPNid=$(az ad sp show --id ${{ secrets.CLIENT_ID }} --query objectId -o tsv)
 
           echo "backend_SPNid: SPNObjectId"
