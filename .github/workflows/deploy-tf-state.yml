@@ -1,6 +1,8 @@
 name: Deploy Terraform state to backend
+
 'on':
   workflow_dispatch:
+
 jobs:
   Deploy:
     name: Deploy TF State to backend
@@ -8,9 +10,11 @@ jobs:
     defaults:
       run:
         shell: bash
+
     steps:
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v2.3.4
+
       - name: Deploy TF State
         run: |
           set -a
@@ -38,4 +42,20 @@ jobs:
           az keyvault create \
             -n $TF_VAR_state_key_vault_name \
             -l $TF_VAR_location \
-            -g $TF_VAR_state_key_vault_name
+            -g $TF_VAR_state_resource_group_name
+
+          ssh-keygen -t rsa -b 4096 -f tfazlnxkey -N ""
+
+      - name: Upload SSH public key to Key Vault
+        run: |
+          az keyvault secret set \
+            --vault-name ${{ env.TF_VAR_state_key_vault_name }} \
+            --name tfazlnxkeypub \
+            --file tfazlnxkey.pub
+
+      - name: Upload SSH private key to Key Vault
+        run: |
+          az keyvault secret set \
+            --vault-name ${{ env.TF_VAR_state_key_vault_name }} \
+            --name tfazlnxkeypriv \
+            --file tfazlnxkey
