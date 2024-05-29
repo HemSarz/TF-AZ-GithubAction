@@ -67,7 +67,7 @@ jobs:
           - name: Fetch SPN ObjectID & Grant SPN Access to KV
           backend_SPNid=$(az ad sp show --id ${{ secrets.CLIENT_ID }} --query objectId -o tsv)
 
-          echo "backend_SPNid:$SPNObjectId"
+          echo "backend_SPNid: SPNObjectId"
 
           az keyvault set-policy \
             -n $TF_VAR_state_key_vault_name \
