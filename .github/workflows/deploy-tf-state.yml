@@ -19,9 +19,9 @@ jobs:
       - name: Azure Login
         uses: azure/login@v1
         with:
-          client-id: ${{ secrets.ARM_CLIENT_ID }}
-          client-secret: ${{ secrets.ARM_CLIENT_SECRET }}
-          tenant-id: ${{ secrets.ARM_TENANT_ID }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
 
       - name: Deploy TF State
         run: |
