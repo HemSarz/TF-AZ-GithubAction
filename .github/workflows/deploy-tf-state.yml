@@ -60,7 +60,7 @@ jobs:
             -l $TF_VAR_location \
             -g $TF_VAR_state_resource_group_name
 
-      - name: Fetch SPN ObjectID & Grant SPN Access to KV
+      - name: Fetch SPN ObjectID and Grant SPN Access to KV
         run: |
           set -a
           source .env.backend
