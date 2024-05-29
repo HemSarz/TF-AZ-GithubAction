@@ -64,15 +64,14 @@ jobs:
         run: |
           set -a
           source .env.backend
-          spn_object_id=$(az ad sp show \
-            --id ${{ secrets.CLIENT_ID }} \
-            --query objectId -o tsv)
+          - name: Fetch SPN ObjectID & Grant SPN Access to KV
+          backend_SPNid=$(az ad sp show --id ${{ secrets.CLIENT_ID }} --query objectId -o tsv)
 
-          echo "SPN_OBJECT_ID=$spn_object_id" >> $GITHUB_ENV
+          echo "backend_SPNid:$SPNObjectId"
 
           az keyvault set-policy \
             -n $TF_VAR_state_key_vault_name \
-            --object-id $spn_object_id \
+            --object-id $SPNObjectId \
             --secret-permissions get list set
 
       - name: Create SSHKey
