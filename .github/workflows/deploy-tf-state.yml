@@ -38,5 +38,5 @@ jobs:
             --allow-blob-public-access false
 
           az storage container create \
-            --name tfstate \
+            --name "tfstate" \
             --account-name $TF_VAR_state_storage_account_name
