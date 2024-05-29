@@ -1,6 +1,6 @@
 name: Deploy Terraform state to backend
 'on':
-  workflow_dispatch: null
+  workflow_dispatch:
 jobs:
   Deploy:
     name: Deploy TF State to backend
@@ -16,9 +16,9 @@ jobs:
           set -a
           source .env.backend
           az login --service-principal \
-            -u ${{ secrets.AZURE_CLIENT_ID }} \
-            -p ${{ secrets.AZURE_CLIENT_SECRET }} \
-            --tenant ${{ secrets.AZURE_TENANT_ID }}
+            -u ${{ secrets.CLIENT_ID }} \
+            -p ${{ secrets.CLIENT_SECRET }} \
+            --tenant ${{ secrets.TENANT_ID }}
 
           az group create \
             -l $TF_VAR_location
