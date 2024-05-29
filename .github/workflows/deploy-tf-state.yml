@@ -28,7 +28,7 @@ jobs:
             -n $TF_VAR_state_storage_account_name \
             -g $TF_VAR_state_resource_group_name \
             -l $TF_VAR_location \
-            --sku $TF_VAR_stg_sku_name \
+            --sku Standard_LRS \
             --allow-blob-public-access false
 
           az storage container create \
