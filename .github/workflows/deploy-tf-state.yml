@@ -21,7 +21,7 @@ jobs:
             --tenant ${{ secrets.TENANT_ID }}
 
           az group create \
-            -n $TF_VAR_resource_group_name
+            --name $TF_VAR_resource_group_name
             -l $TF_VAR_location
 
           az storage account create \
