@@ -24,10 +24,14 @@ jobs:
             -p ${{ secrets.CLIENT_SECRET }} \
             --tenant ${{ secrets.TENANT_ID }}
 
+      - name: Create Resource Group
+        run: |
           az group create \
             -l $TF_VAR_location \
             -n $TF_VAR_state_resource_group_name
 
+      - name: Create Storage Account
+        run: |
           az storage account create \
             -n $TF_VAR_state_storage_account_name \
             -g $TF_VAR_state_resource_group_name \
@@ -35,15 +39,36 @@ jobs:
             --sku Standard_LRS \
             --allow-blob-public-access false
 
+      - name: Create STG Container
+        run: |
           az storage container create \
             --name $TF_VAR_state_storage_account_container_name \
             --account-name $TF_VAR_state_storage_account_name
 
+      - name: Create Key Vault
+        run: |
           az keyvault create \
             -n $TF_VAR_state_key_vault_name \
             -l $TF_VAR_location \
             -g $TF_VAR_state_resource_group_name
 
+      - name: Fetch SPN ObjectID
+        run: |
+              spn_object_id=$(az ad sp show \
+              --id ${{ secrets.CLIENT_ID }} \
+              --query objectId -o tsv)
+              
+              echo "SPN_OBJECT_ID=$spn_object_id" >> $GITHUB_ENV
+
+      - name: Grant SPN Access to KV
+        run: |
+            az keyvault set-policy \
+            -n $TF_VAR_state_key_vault_name \
+            --object-id ${{ env.SPN_OBJECT_ID }} \
+            --secret-permissions get list set
+
+      - name: Create SSHKey
+        run: |
           ssh-keygen -t rsa -b 4096 -f tfazlnxkey -N ""
 
       - name: Upload SSH public key to Key Vault
