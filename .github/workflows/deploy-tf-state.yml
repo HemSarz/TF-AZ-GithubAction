@@ -1,6 +1,6 @@
 name: Deploy Terraform state to backend
 
-'on':
+"on":
   workflow_dispatch:
 
 jobs:
@@ -60,21 +60,19 @@ jobs:
             -l $TF_VAR_location \
             -g $TF_VAR_state_resource_group_name
 
-      - name: Fetch SPN ObjectID
-        run: |
-              spn_object_id=$(az ad sp show \
-              --id ${{ secrets.CLIENT_ID }} \
-              --query objectId -o tsv)
-
-              echo "SPN_OBJECT_ID=$spn_object_id" >> $GITHUB_ENV
-
-      - name: Grant SPN Access to KV
+      - name: Fetch SPN ObjectID & Grant SPN Access to KV
         run: |
           set -a
           source .env.backend
-            az keyvault set-policy \
+          spn_object_id=$(az ad sp show \
+            --id ${{ secrets.CLIENT_ID }} \
+            --query objectId -o tsv)
+
+          echo "SPN_OBJECT_ID=$spn_object_id" >> $GITHUB_ENV
+
+          az keyvault set-policy \
             -n $TF_VAR_state_key_vault_name \
-            --object-id ${{ env.SPN_OBJECT_ID }} \
+            --object-id $spn_object_id \
             --secret-permissions get list set
 
       - name: Create SSHKey
