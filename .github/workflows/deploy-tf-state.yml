@@ -34,3 +34,8 @@ jobs:
           az storage container create \
             --name $TF_VAR_state_storage_account_container_name \
             --account-name $TF_VAR_state_storage_account_name
+
+          az keyvault create \
+            -n $TF_VAR_state_key_vault_name \
+            -l $TF_VAR_location
+            -rg $TF_VAR_state_resource_group_name
