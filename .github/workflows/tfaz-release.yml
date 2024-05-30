@@ -1,7 +1,9 @@
 on:
-    release:
-        types: [publisher]
-        branch: [main]
+  release:
+    types:
+      - published
+    branches:
+      - main
 
 name: On release Main 
 
