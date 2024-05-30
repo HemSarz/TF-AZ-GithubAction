@@ -59,7 +59,8 @@ jobs:
             -n $TF_VAR_state_key_vault_name \
             -l $TF_VAR_location \
             -g $TF_VAR_state_resource_group_name \
-            --enable-rbac-authorization false
+            --enable-rbac-authorization false \
+            --enable-purge-protection false
 
       - name: Fetch SPN ObjectID and Grant SPN Access to KV
         run: |
