@@ -1,6 +1,6 @@
 name: Deploy Terraform state to backend
 
-on:
+"on":
   workflow_dispatch:
 
 jobs:
@@ -62,21 +62,18 @@ jobs:
             --enable-rbac-authorization false \
             --enable-purge-protection false
 
-      - name: Fetch SPN ObjectID and Grant SPN Access to KV
+      - name: Retrieve Service Principal ObjectID and Grant Access to Key Vault
         run: |
           set -a
           source .env.backend
-            backend_SPNid=$(az ad sp show --id ${{ secrets.CLIENT_ID }} --query id -o tsv)
-  
-            echo "backend_SPNid: backend_SPNid" >> $GITHUB_ENV
+          backend_SPNid=$(az ad sp show --id ${{ secrets.CLIENT_ID }} --query id -o tsv)
 
-      - name: Grant SPN Access to Backend KV
-        run: |
-          az role assignment create \
-          --assignee ${{ env.backend_SPNid }} \
-          --role "Key Vault Secrets User" \
-          --scope /subscriptions/${{ secrets.SUBSCRIPTION_ID }}/resourcegroups/$TF_VAR_state_resource_group_name/providers/Microsoft.KeyVault/vaults/$TF_VAR_state_key_vault_name
-          
+          echo "backend_SPNid: $backend_SPNid"
+
+          az keyvault set-policy \
+            -n $TF_VAR_state_key_vault_name \
+            --object-id $backend_SPNid \
+            --secret-permissions get list set
 
       - name: Create SSHKey
         run: |
