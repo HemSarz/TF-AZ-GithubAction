@@ -59,8 +59,7 @@ jobs:
             -n $TF_VAR_state_key_vault_name \
             -l $TF_VAR_location \
             -g $TF_VAR_state_resource_group_name \
-            --enable-rbac-authorization false \
-            --enable-purge-protection false
+            --enable-rbac-authorization false
 
       - name: Retrieve Service Principal ObjectID and Grant Access to Key Vault
         run: |
