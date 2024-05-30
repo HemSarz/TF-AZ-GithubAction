@@ -1,7 +1,11 @@
-# ResourceGroup VB
+variable "prefix" {
+  type    = string
+  default = "tfaz"
+}
+
 variable "rgName" {
   type    = string
-  default = "tfazrg01"
+  default = "tfaz-rg"
 }
 
 variable "location" {
@@ -9,11 +13,11 @@ variable "location" {
   default = "norwayeast"
 }
 
-#StorageAccount
-variable "StorageAccount" {
+variable "environment" {
   type    = string
-  default = "tfazstg01"
+  default = "dev"
 }
+
 variable "account_tier" {
   type    = string
   default = "Standard"
@@ -24,32 +28,12 @@ variable "account_replication_type" {
   default = "LRS"
 }
 
-variable "STGContName" {
-  type    = string
-  default = "tfazcont01"
-}
-
-## KeyVault
-variable "kVName" {
-  type    = string
-  default = "tfazkv01"
-
-}
-
 variable "sku_name" {
   type    = string
   default = "standard"
-
 }
 
-#SPN
-variable "SPNName" {
+variable "admin_username" {
   type    = string
-  default = "tfazspn"
+  default = "adminuser"
 }
-
-variable "tenant_id" {
-  type    = string
-  default = "7afe75ee-20fb-4e79-93a6-9881f786e2d8"
-}
-
