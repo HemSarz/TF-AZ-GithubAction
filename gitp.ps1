@@ -2,7 +2,7 @@
 git add -A
 
 
-git commit -m "Fix release issues and update configurations"
+git commit -m "Fixed: provider block backend config were missing quotation marks"
 
 # SemanticVersioning
 git tag v1.0.2
