@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "tfazrg" {
 ## Storage Account
 
 resource "random_string" "storage_account_name" {
-  length  = 6
+  length  = 5
   special = false
   upper   = false
 }
