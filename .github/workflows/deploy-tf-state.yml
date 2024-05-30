@@ -1,6 +1,6 @@
 name: Deploy Terraform state to backend
 
-"on":
+on:
   workflow_dispatch:
 
 jobs:
