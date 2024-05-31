@@ -30,6 +30,7 @@ jobs:
           client-id: ${{ secrets.CLIENT_ID }}
           tenant-id: ${{ secrets.TENANT_ID }}
           client-secret: ${{ secrets.CLIENT_SECRET }}
+          subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
 
       - name: Initialize Terraform
         working-directory: ./terraform
