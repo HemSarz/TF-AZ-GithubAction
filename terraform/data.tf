@@ -11,12 +11,12 @@ data "azuread_service_principal" "tfazsp" {
 }
 
 data "azurerm_key_vault" "bckndKV" {
-  name                = "bcknd-kv-tfaz"
+  name                = "bcknd-tfaz-kv-01"
   resource_group_name = data.azurerm_resource_group.tfazrgbackend.name
 }
 
 data "azurerm_storage_account" "bckndstg" {
-  name                = "bckndstgtfaz"
+  name                = "backndtfazstg"
   resource_group_name = data.azurerm_resource_group.tfazrgbackend.name
 }
 
