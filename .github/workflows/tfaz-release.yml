@@ -1,44 +1,38 @@
 name: Deploy Terraform on Release
-
-on:
+'on':
   release:
-    types: [published]
+    types:
+      - published
   push:
     branches:
       - main
-
 jobs:
   terraform:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
       - name: Load environment variables from .env.backend
         run: |
           cat .env.backend | grep -v '^#' | while IFS= read -r line; do
             echo "$line" >> $GITHUB_ENV
           done
-
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.0.11
-
       - name: Azure Login
         uses: azure/login@v2
         with:
-          creds: '{"clientId":"${{ secrets.clientId }}","clientSecret":"${{ secrets.clientSecret }}","tenantId":"${{ secrets.tenantId }}"}'
-          
+          creds: '{"clientId":"${{ secrets.clientId }}","clientSecret":"${{
+            secrets.clientSecret }}","tenantId":"${{ secrets.tenantId }}'
+            
       - name: Initialize Terraform
         working-directory: ./terraform
         run: terraform init
-
       - name: Terraform Plan
         working-directory: ./terraform
         run: terraform plan -out=tfplan
-
       - name: Terraform Apply
         working-directory: ./terraform
         run: terraform apply -input=false tfplan
