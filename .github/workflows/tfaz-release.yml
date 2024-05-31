@@ -1,8 +1,10 @@
 name: Deploy Terraform on Release
 
 on:
+  release:
+    types: [published]
   push:
-    branches: 
+    branches:
       - main
 
 jobs:
@@ -24,12 +26,11 @@ jobs:
         with:
           terraform_version: 1.0.11
 
-      - name: Configure Azure credentials
+      - name: Azure Login
         uses: azure/login@v2
         with:
-          creds: '{"clientId":"${{ secrets._CLIENT_ID }}","clientSecret":"${{ secrets._CLIENT_SECRET }}","tenantId":"${{ secrets._TENANT_ID }}"}'
-
-
+          creds: '{"clientId":"${{ secrets.clientId }}","clientSecret":"${{ secrets.clientSecret }}","tenantId":"${{ secrets.tenantId }}"}'
+          
       - name: Initialize Terraform
         working-directory: ./terraform
         run: terraform init
