@@ -126,8 +126,8 @@ resource "azurerm_linux_virtual_machine" "web" {
 
   source_image_reference {
     publisher = "Canonical"
-    offer     = "00-01-com-ubuntu-server-jammy"
-    sku       = "22_04-lts"
+    offer     = "UbuntuServer"
+    sku       = "18.04-LTS"
     version   = "latest"
   }
 }
