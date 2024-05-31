@@ -24,11 +24,12 @@ jobs:
         run: |
           set -a 
           source env.backend
-          az login --service-principal \
-          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+          az group delete \
+          -n tfaz-bcknd-rg --yes
+
+          az group delete \
+          -n networkwatcherrg --yes
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
