@@ -1,59 +1,46 @@
+name: Deploy Terraform on Release
+
 on:
   release:
-    types:
-      - published
+    types: [published]
+  push:
     branches:
       - main
 
-name: On release Main 
-
 jobs:
   terraform:
-    name: 'Terraform'
     runs-on: ubuntu-latest
-    
-    defaults:
-      run:
-        shell: bash
-        working-directory: ./terraform
-        
+
     steps:
-        - name: Checkout
-          uses: actions/checkout@v4.1.6
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-        - name: Login to Azure
-          run: |
-            az login --service-principal \
-              -u ${{ secrets.CLIENT_ID }} \
-              -p ${{ secrets.CLIENT_SECRET }} \
-              --tenant ${{ secrets.TENANT_ID }}
+      - name: Load environment variables from .env.backend
+        run: |
+          cat .env.backend | grep -v '^#' | while IFS= read -r line; do
+            echo "$line" >> $GITHUB_ENV
+          done
 
-        - name: Install Terraform
-          uses: hashicorp/setup-terraform@v3.1.1
-          with:
-            terraform_version: ${{ env.TF_VERSION }}
-        
-        - name: Terraform init
-          id: init
-          run: | 
-            set -a 
-            source ../.env.backend
-            terraform init \
-            -backend-config="resource_group_name=$TF_VAR_state_resource_group_name" \
-            -backend-config="storage_account_name=$TF_VAR_storage_account_name"
-        
-        - name: Terraform fmt
-          id: fmt
-          run: terraform fmt -check
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.0.11
 
-        - name: Terraform validate
-          id: validate
-          run: terraform validate -no-color
+      - name: Configure Azure credentials
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
 
-        - name: Terraform plan
-          id: plan
-          run: terraform plan -no-color
-  
-        - name: Terraform apply
-          id: apply
-          run: terraform apply -auto-approve
+      - name: Initialize Terraform
+        working-directory: ./terraform
+        run: terraform init
+
+      - name: Terraform Plan
+        working-directory: ./terraform
+        run: terraform plan -out=tfplan
+
+      - name: Terraform Apply
+        working-directory: ./terraform
+        run: terraform apply -input=false tfplan
