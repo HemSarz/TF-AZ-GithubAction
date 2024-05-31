@@ -1,7 +1,7 @@
 on:
-  release:
-    types: [published]
-    branches: [main]
+  push:
+    branches:
+      - main
 
 name: On Release Main
 
