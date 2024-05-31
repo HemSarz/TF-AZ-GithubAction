@@ -20,13 +20,13 @@ jobs:
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: 1.0.11
+          terraform_version: 1.3.6
+
       - name: Azure Login
         uses: azure/login@v2
         with:
-          creds: '{"clientId":"${{ secrets.clientId }}","clientSecret":"${{
-            secrets.clientSecret }}","tenantId":"${{ secrets.tenantId }}'
-            
+          creds: '{"clientId":"${{ secrets.CLIENT_ID }}","clientSecret":"${{ secrets.CLIENT_SECRET }}","subscriptionId":"${{ secrets.SUBSCRIPTION_ID }}","tenantId":"${{ secrets.TENANT_ID }}"}'
+
       - name: Initialize Terraform
         working-directory: ./terraform
         run: terraform init
