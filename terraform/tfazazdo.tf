@@ -13,7 +13,7 @@ resource "random_string" "storage_account_name" {
 }
 
 resource "azurerm_storage_account" "tfazstg" {
-  name                     = lower("${var.prefix}stg${var.environment}${random_string.storage_account_name.resukt}")
+  name                     = lower("${var.prefix}stg${var.environment}${random_string.storage_account_name.result}")
   resource_group_name      = azurerm_resource_group.tfazrg.name
   location                 = var.location
   account_tier             = var.account_tier
