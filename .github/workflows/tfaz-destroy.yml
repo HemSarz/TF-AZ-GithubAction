@@ -20,6 +20,10 @@ jobs:
         shell: bash
         working-directory: ./terraform
 
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
       - name: Destroy backend
         run: |
           set -a 
@@ -29,10 +33,6 @@ jobs:
 
           az group delete \
           -n networkwatcherrg --yes
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
