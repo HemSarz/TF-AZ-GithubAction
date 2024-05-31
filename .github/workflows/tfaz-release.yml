@@ -27,6 +27,13 @@ jobs:
         - name: Checkout
           uses: actions/checkout@v4.1.6
 
+        - name: Login to Azure
+          run: |
+            az login --service-principal \
+              -u ${{ secrets.CLIENT_ID }} \
+              -p ${{ secrets.CLIENT_SECRET }} \
+              --tenant ${{ secrets.TENANT_ID }}
+
         - name: Install Terraform
           uses: hashicorp/setup-terraform@v3.1.1
           with:

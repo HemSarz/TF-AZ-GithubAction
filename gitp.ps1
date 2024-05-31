@@ -2,11 +2,11 @@
 git add -A
 
 
-git commit -m "Fixed: provider block backend config were missing quotation marks"
+git commit -m "Update: yml config"
 
 # SemanticVersioning
-git tag v1.0.2
+git tag v1.0.3
 
 
 git push origin main
-git push origin v1.0.2
+git push origin v1.0.3
