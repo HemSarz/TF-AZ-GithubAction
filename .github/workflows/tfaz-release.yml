@@ -25,12 +25,10 @@ jobs:
           terraform_version: 1.0.11
 
       - name: Configure Azure credentials
-        uses: azure/login@v1
+        uses: azure/login@v2
         with:
-          client-id: ${{ secrets.CLIENT_ID }}
-          tenant-id: ${{ secrets.TENANT_ID }}
-          client-secret: ${{ secrets.CLIENT_SECRET }}
-          subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
+          creds: '{"clientId":"${{ secrets._CLIENT_ID }}","clientSecret":"${{ secrets._CLIENT_SECRET }}","subscriptionId":"${{ secrets._SUBSCRIPTION_ID }}","tenantId":"${{ secrets._TENANT_ID }}"}'
+
 
       - name: Initialize Terraform
         working-directory: ./terraform
