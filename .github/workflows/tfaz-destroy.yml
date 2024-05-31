@@ -1,4 +1,4 @@
-name: Destroy Infrastructure on PR Close
+name: Destroy backend infra
 
 on:
   workflow_dispatch:
@@ -20,6 +20,15 @@ jobs:
         shell: bash
         working-directory: ./terraform
 
+      - name: Destroy backend
+        run: |
+          set -a 
+          source env.backend
+          az login --service-principal \
+          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
