@@ -2,10 +2,10 @@
 git add -A
 
 
-git commit -m "Update: yml config"
+git commit -m "Resolved pipeline config issues"
 
 # SemanticVersioning
-git tag v1.0.7
+git tag v1.0.8
 
 
 git push origin main
