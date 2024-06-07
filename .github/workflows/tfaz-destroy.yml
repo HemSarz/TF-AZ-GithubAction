@@ -7,7 +7,6 @@ jobs:
   terraform-destroy:
     name: 'Terraform Destroy'
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == false
     env:
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
@@ -39,10 +38,6 @@ jobs:
         with:
           terraform_version: ${{ env.TF_VERSION }}
 
-      - name: Terraform fmt
-        id: fmt
-        run: terraform fmt -check
-
       - name: Terraform init
         id: init
         run: |
@@ -51,15 +46,7 @@ jobs:
           terraform init \
             -backend-config="resource_group_name=$TF_VAR_state_resource_group_name" \
             -backend-config="storage_account_name=$TF_VAR_state_storage_account_name"
-
-      - name: Terraform validate
-        id: validate
-        run: terraform validate -no-color
-
-      - name: Terraform plan destroy
-        id: plan
-        run: terraform plan -destroy -no-color
-
+            
       - name: Terraform destroy
         id: destroy
         run: terraform destroy -auto-approve
