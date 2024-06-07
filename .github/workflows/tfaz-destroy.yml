@@ -30,6 +30,11 @@
 
         - name: Destroy backend
           run: |
+            Remove-AzKeyVault `
+            -VaultName bcknd-tfaz-kv-01 `
+            -InRemovedState `
+            -Location norwayeast
+
             az group delete \
             -n tfaz-bcknd-rg --yes
 
