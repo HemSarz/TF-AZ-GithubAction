@@ -16,7 +16,7 @@ data "azurerm_key_vault" "bckndKV" {
 }
 
 data "azurerm_storage_account" "bckndstg" {
-  name                = "backndtfazstg"
+  name                = "backndtfazstg01"
   resource_group_name = data.azurerm_resource_group.tfazrgbackend.name
 }
 
