@@ -11,7 +11,7 @@ data "azuread_service_principal" "tfazsp" {
 }
 
 data "azurerm_key_vault" "bckndKV" {
-  name                = "bcknd-tfaz-kv-01"
+  name                = "bcknd-tfaz-kvault"
   resource_group_name = data.azurerm_resource_group.tfazrgbackend.name
 }
 
