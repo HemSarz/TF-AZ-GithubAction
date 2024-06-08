@@ -30,8 +30,11 @@
 
         - name: Destroy backend
           run: |
+            Import-Module Az
+            Connect-AzAccount -ServicePrincipal -Tenant $env:ARM_TENANT_ID -Credential (New-Object PSCredential($env:ARM_CLIENT_ID, (ConvertTo-SecureString $env:ARM_CLIENT_SECRET -AsPlainText -Force)))
+
             Remove-AzKeyVault `
-            -VaultName bcknd-tfaz-kvault `
+            -VaultName bcknd-tfaz-kv-0 `
             -InRemovedState `
             -Location norwayeast
 
