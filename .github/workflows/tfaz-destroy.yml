@@ -30,7 +30,7 @@
 
         - name: Clean up Azure resources
           run: |
-            az keyvault delete --name bcknd-tfaz-kvault --resource-group myResourceGroup
+            az keyvault delete --name bcknd-tfaz-kvault --resource-group tfaz-bcknd-rg
             az keyvault purge --name bcknd-tfaz-kvault --location norwayeast
             
             az group delete --name tfaz-bcknd-rg --yes --no-wait
