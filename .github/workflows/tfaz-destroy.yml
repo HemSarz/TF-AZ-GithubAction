@@ -28,23 +28,13 @@
           with:
             creds: '{"clientId":"${{ secrets.ARM_CLIENT_ID }}","clientSecret":"${{ secrets.ARM_CLIENT_SECRET }}","subscriptionId":"${{ secrets.ARM_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.ARM_TENANT_ID }}"}'
 
-        - name: Destroy backend
-          shell:
-          run: |  
-            Install-Module -Name Az -Force -Scope CurrentUser
-            Import-Module Az
-            Connect-AzAccount -ServicePrincipal -Tenant $env:ARM_TENANT_ID -Credential (New-Object PSCredential($env:ARM_CLIENT_ID, (ConvertTo-SecureString $env:ARM_CLIENT_SECRET -AsPlainText -Force)))
-
-            Remove-AzKeyVault `
-            -VaultName bcknd-tfaz-kv-0 `
-            -InRemovedState `
-            -Location norwayeast
-
-            az group delete \
-            -n tfaz-bcknd-rg --yes
-
-            az group delete \
-            -n networkwatcherrg --yes
+        - name: Clean up Azure resources
+          run: |
+            az keyvault delete --name bcknd-tfaz-kvault --resource-group myResourceGroup
+            az keyvault purge --name bcknd-tfaz-kvault --location norwayeast
+            
+            az group delete --name tfaz-bcknd-rg --yes --no-wait
+            az group delete --name networkwatcherrg --yes --no-wait
 
         - name: Setup Terraform
           uses: hashicorp/setup-terraform@v2
