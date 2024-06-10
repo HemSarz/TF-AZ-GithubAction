@@ -23,19 +23,6 @@
         - name: Checkout
           uses: actions/checkout@v2
 
-        - name: Az login
-          uses: azure/login@v2
-          with:
-            creds: '{"clientId":"${{ secrets.ARM_CLIENT_ID }}","clientSecret":"${{ secrets.ARM_CLIENT_SECRET }}","subscriptionId":"${{ secrets.ARM_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.ARM_TENANT_ID }}"}'
-
-        - name: Clean up Azure resources
-          run: |
-            az keyvault delete --name bcknd-tfaz-kvault --resource-group tfaz-bcknd-rg
-            az keyvault purge --name bcknd-tfaz-kvault --location norwayeast
-            
-            az group delete --name tfaz-bcknd-rg --yes --no-wait
-            az group delete --name networkwatcherrg --yes --no-wait
-
         - name: Setup Terraform
           uses: hashicorp/setup-terraform@v2
           with:
@@ -53,3 +40,16 @@
         - name: Terraform destroy
           id: destroy
           run: terraform destroy -auto-approve
+
+        - name: Az login
+          uses: azure/login@v2
+          with:
+            creds: '{"clientId":"${{ secrets.ARM_CLIENT_ID }}","clientSecret":"${{ secrets.ARM_CLIENT_SECRET }}","subscriptionId":"${{ secrets.ARM_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.ARM_TENANT_ID }}"}'
+
+        - name: Destroy backend RG
+          run: |
+            az keyvault delete --name bcknd-tfaz-kvault --resource-group tfaz-bcknd-rg
+            az keyvault purge --name bcknd-tfaz-kvault --location norwayeast
+            
+            az group delete --name tfaz-bcknd-rg --yes --no-wait
+            az group delete --name networkwatcherrg --yes --no-wait
