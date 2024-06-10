@@ -29,7 +29,9 @@
             creds: '{"clientId":"${{ secrets.ARM_CLIENT_ID }}","clientSecret":"${{ secrets.ARM_CLIENT_SECRET }}","subscriptionId":"${{ secrets.ARM_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.ARM_TENANT_ID }}"}'
 
         - name: Destroy backend
-          run: |
+          shell:
+          run: |  
+            Install-Module -Name Az -Force -Scope CurrentUser
             Import-Module Az
             Connect-AzAccount -ServicePrincipal -Tenant $env:ARM_TENANT_ID -Credential (New-Object PSCredential($env:ARM_CLIENT_ID, (ConvertTo-SecureString $env:ARM_CLIENT_SECRET -AsPlainText -Force)))
 
