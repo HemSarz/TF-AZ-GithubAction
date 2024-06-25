@@ -1,7 +1,5 @@
 provider "azurerm" {
-  features {
-    purge_soft_delete_on_destroy = true
-  }
+  features {}
 }
 
 terraform {

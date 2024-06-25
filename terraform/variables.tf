@@ -13,7 +13,7 @@ variable "location" {
   default = "norwayeast"
 }
 
-variable "environment" {
+variable "env" {
   type    = string
   default = "dev"
 }
